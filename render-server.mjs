@@ -10,44 +10,43 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PORT = process.env.PORT || 3000;
 
 async function loadServer() {
-  const assetsDir = path.join(__dirname, "dist", "server", "assets");
-  const files = fs.readdirSync(assetsDir);
-  const serverFile = files.find((f) => f.startsWith("server-") && f.endsWith(".js"));
-  if (!serverFile) throw new Error("Server bundle not found in dist/server/assets/");
-  const mod = await import(pathToFileURL(path.join(assetsDir, serverFile)).href);
-  console.log("Server module keys:", Object.keys(mod));
-  console.log("Server module default keys:", mod.default ? Object.keys(mod.default) : "no default");
-  // Try all possible export shapes
-  const handler = mod.default?.fetch ? mod.default
-    : mod.fetch ? mod
-    : mod.default?.default?.fetch ? mod.default.default
-    : null;
-  if (!handler) throw new Error("Could not find fetch handler in server bundle. Keys: " + Object.keys(mod));
-  return handler;
+  const serverJs = path.join(__dirname, "dist", "server", "server.js");
+  const mod = await import(pathToFileURL(serverJs).href);
+  console.log("server.js keys:", Object.keys(mod));
+
+  // dist/server/server.js re-exports the TanStack Start handler
+  // Try every known export shape
+  const candidate =
+    mod.default?.fetch ? mod.default :
+    mod.fetch ? mod :
+    mod.default?.default?.fetch ? mod.default.default :
+    mod.handler?.fetch ? mod.handler :
+    null;
+
+  if (candidate) return candidate;
+
+  // Last resort: find any key that has a .fetch function
+  for (const key of Object.keys(mod)) {
+    if (mod[key] && typeof mod[key].fetch === "function") return mod[key];
+    if (mod[key]?.default && typeof mod[key].default.fetch === "function") return mod[key].default;
+  }
+
+  throw new Error("No fetch handler found. Keys: " + Object.keys(mod).join(", "));
 }
 
 async function main() {
   const handler = await loadServer();
+  console.log("Handler loaded, fetch type:", typeof handler.fetch);
+
   const app = new Hono();
 
-  // Serve static assets from dist/client
-  app.use(
-    "/assets/*",
-    serveStatic({
-      root: "./dist/client",
-    })
-  );
+  // Serve static files from dist/client
+  app.use("/assets/*", serveStatic({ root: "./dist/client" }));
+  app.use("/favicon.ico", serveStatic({ root: "./dist/client" }));
+  app.use("/robots.txt", serveStatic({ root: "./dist/client" }));
 
-  app.use(
-    "/favicon.ico",
-    serveStatic({ root: "./dist/client" })
-  );
-
-  // All other requests go to TanStack Start SSR handler
-  app.all("*", async (c) => {
-    const response = await handler.fetch(c.req.raw, {}, {});
-    return response;
-  });
+  // All other requests → TanStack Start SSR
+  app.all("*", (c) => handler.fetch(c.req.raw, {}, {}));
 
   serve({ fetch: app.fetch, port: Number(PORT) }, () => {
     console.log(`🍦 Frost Bite running on port ${PORT}`);
