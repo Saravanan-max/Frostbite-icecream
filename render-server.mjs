@@ -15,7 +15,15 @@ async function loadServer() {
   const serverFile = files.find((f) => f.startsWith("server-") && f.endsWith(".js"));
   if (!serverFile) throw new Error("Server bundle not found in dist/server/assets/");
   const mod = await import(pathToFileURL(path.join(assetsDir, serverFile)).href);
-  return mod.default ?? mod;
+  console.log("Server module keys:", Object.keys(mod));
+  console.log("Server module default keys:", mod.default ? Object.keys(mod.default) : "no default");
+  // Try all possible export shapes
+  const handler = mod.default?.fetch ? mod.default
+    : mod.fetch ? mod
+    : mod.default?.default?.fetch ? mod.default.default
+    : null;
+  if (!handler) throw new Error("Could not find fetch handler in server bundle. Keys: " + Object.keys(mod));
+  return handler;
 }
 
 async function main() {
