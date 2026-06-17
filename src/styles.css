@@ -1,0 +1,207 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* FrostBite — playful, candy-bright ice cream brand.
+   Palette: hot pink + deep navy on cream, with sky-blue hero.
+   Type:    brush script display + bold condensed sans + clean body. */
+
+@theme inline {
+  --font-script: "Caveat Brush", "Pacifico", cursive;
+  --font-display: "Archivo Black", "Anton", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Plus Jakarta Sans", "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-cream: var(--cream);
+  --color-navy: var(--navy);
+  --color-pink: var(--pink);
+  --color-sky: var(--sky);
+  --color-blush: var(--blush);
+  --color-mango: var(--mango);
+  --color-mint: var(--mint);
+
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+:root {
+  --radius: 1rem;
+
+  --cream: oklch(0.985 0.012 75);
+  --navy: oklch(0.22 0.10 270);
+  --pink: oklch(0.65 0.24 0);            /* hot pink #ee2a7b-ish */
+  --sky: oklch(0.92 0.04 230);
+  --blush: oklch(0.92 0.04 12);
+  --mango: oklch(0.82 0.18 80);
+  --mint: oklch(0.82 0.12 160);
+
+  --background: oklch(0.985 0.012 75);
+  --foreground: oklch(0.22 0.10 270);
+
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.22 0.10 270);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.22 0.10 270);
+
+  --primary: oklch(0.65 0.24 0);              /* hot pink */
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.96 0.018 60);
+  --secondary-foreground: oklch(0.22 0.10 270);
+  --muted: oklch(0.95 0.02 60);
+  --muted-foreground: oklch(0.50 0.05 270);
+  --accent: oklch(0.22 0.10 270);             /* navy as accent */
+  --accent-foreground: oklch(1 0 0);
+  --destructive: oklch(0.6 0.24 27);
+  --destructive-foreground: oklch(1 0 0);
+  --border: oklch(0.92 0.02 60);
+  --input: oklch(0.92 0.02 60);
+  --ring: oklch(0.65 0.24 0);
+
+  --gradient-hero: linear-gradient(180deg, oklch(0.93 0.05 230) 0%, oklch(0.95 0.04 350) 60%, oklch(0.93 0.06 10) 100%);
+  --gradient-pink: linear-gradient(180deg, oklch(0.95 0.045 10) 0%, oklch(0.92 0.06 350) 100%);
+  --gradient-navy: linear-gradient(160deg, oklch(0.24 0.12 270) 0%, oklch(0.18 0.10 270) 100%);
+  --shadow-soft: 0 20px 50px -20px oklch(0.22 0.10 270 / 0.18);
+  --shadow-pink: 0 18px 45px -15px oklch(0.65 0.24 0 / 0.45);
+
+  --sidebar: oklch(0.985 0.012 75);
+  --sidebar-foreground: oklch(0.22 0.10 270);
+  --sidebar-primary: oklch(0.65 0.24 0);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.96 0.018 60);
+  --sidebar-accent-foreground: oklch(0.22 0.10 270);
+  --sidebar-border: oklch(0.92 0.02 60);
+  --sidebar-ring: oklch(0.65 0.24 0);
+}
+
+.dark {
+  --background: oklch(0.18 0.08 270);
+  --foreground: oklch(0.97 0.012 75);
+  --card: oklch(0.22 0.10 270);
+  --card-foreground: oklch(0.97 0.012 75);
+  --popover: oklch(0.22 0.10 270);
+  --popover-foreground: oklch(0.97 0.012 75);
+  --primary: oklch(0.68 0.24 0);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.28 0.08 270);
+  --secondary-foreground: oklch(0.97 0.012 75);
+  --muted: oklch(0.28 0.08 270);
+  --muted-foreground: oklch(0.75 0.03 270);
+  --accent: oklch(0.68 0.24 0);
+  --accent-foreground: oklch(1 0 0);
+  --destructive: oklch(0.6 0.24 27);
+  --destructive-foreground: oklch(1 0 0);
+  --border: oklch(0.32 0.08 270);
+  --input: oklch(0.32 0.08 270);
+  --ring: oklch(0.68 0.24 0);
+
+  --sidebar: oklch(0.22 0.10 270);
+  --sidebar-foreground: oklch(0.97 0.012 75);
+  --sidebar-primary: oklch(0.68 0.24 0);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.28 0.08 270);
+  --sidebar-accent-foreground: oklch(0.97 0.012 75);
+  --sidebar-border: oklch(0.32 0.08 270);
+  --sidebar-ring: oklch(0.68 0.24 0);
+}
+
+@layer base {
+  * { border-color: var(--color-border); }
+  html, body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    font-weight: 900;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+  }
+}
+
+@layer utilities {
+  .font-script { font-family: var(--font-script); font-weight: 400; text-transform: none; letter-spacing: 0; }
+  .font-display { font-family: var(--font-display); }
+  .font-body { font-family: var(--font-body); }
+  .text-balance { text-wrap: balance; }
+
+  .bg-gradient-hero { background-image: var(--gradient-hero); }
+  .bg-gradient-pink { background-image: var(--gradient-pink); }
+  .bg-gradient-navy { background-image: var(--gradient-navy); }
+  .shadow-soft { box-shadow: var(--shadow-soft); }
+  .shadow-pink { box-shadow: var(--shadow-pink); }
+
+  .float-slow { animation: float 6s ease-in-out infinite; }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-14px); }
+  }
+
+  /* Order success animations */
+  .animate-scale-in { animation: scale-in 0.5s cubic-bezier(0.34,1.56,0.64,1) forwards; }
+  @keyframes scale-in {
+    from { transform: scale(0); opacity: 0; }
+    to   { transform: scale(1); opacity: 1; }
+  }
+  .animate-ping-once { animation: ping-once 0.6s ease-out forwards; }
+  @keyframes ping-once {
+    0%   { transform: scale(0.8); opacity: 0.8; }
+    100% { transform: scale(2); opacity: 0; }
+  }
+  .animate-draw-check { animation: draw-check 0.4s ease-out 0.4s both; }
+  @keyframes draw-check {
+    from { opacity: 0; transform: scale(0.5) rotate(-10deg); }
+    to   { opacity: 1; transform: scale(1) rotate(0deg); }
+  }
+  .animate-fade-up { animation: fade-up 0.5s ease-out forwards; }
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .scoop-stage { perspective: 1200px; }
+  .scoop-spin { animation: scoop-rotate 18s linear infinite; transform-style: preserve-3d; }
+  @keyframes scoop-rotate {
+    from { transform: rotateY(0) rotateX(-8deg); }
+    to   { transform: rotateY(360deg) rotateX(-8deg); }
+  }
+  .marquee { animation: marquee 35s linear infinite; }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+}
